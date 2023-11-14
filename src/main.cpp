@@ -1,70 +1,140 @@
 #include <Arduino.h>
 
-/* MS5803_05_test.ino
-  This version *only works* with the MS5803-05BA sensor, not the other
-  pressure models (like the MS5803-14BA, MS5803-01BA etc). You can find
-  libraries for those other models at http://github.com/millerlp
-  
-  A basic sketch to test communication with a Measurement Specialties MS5803
-  pressure sensor. The MS5803 should be hooked up in I2C communication mode
-  (PS pin 6 tied to Vdd) and I2C address 0x76 (CSB pin 3 tied to Vdd).
-  Use 10k ohm resistors between the SDA pin and Vdd (+3.3V), and 
-  SCL and Vdd (+3.3V) to keep the I2C lines from floating. 
-  The MS5803 cannot tolerate 5V supply voltage or data links, so use 3.3V 
-  to power it. On a 5V Arduino, you may use the 3.3V output to power the
-  the MS5803, and put a 10k ohm resistor between SDA line and the +3.3V supply,
-  as well as a 10k ohm resistor between  SCLK line and +3.3V supply to limit 
-  the data lines to 3.3V max.
+#include <M5CoreInk.h>
 
-  Luke Miller April 1 2014
-*/
+/******************************************************************************
+  SparkFun_MS5803_Demo.ino
+  Demo Program for MS5803 pressure sensors.
+  Casey Kuhns @ SparkFun Electronics
+  7/20/2014
+  https://github.com/sparkfun/MS5803-14BA_Breakout/
 
-// The Wire library carries out I2C communication
-#include <M5Stack.h>
+  The MS58XX MS57XX and MS56XX by Measurement Specialties is a low cost I2C pressure
+  sensor.  This sensor can be used in weather stations and for altitude
+  estimations. It can also be used underwater for water depth measurements.
+
+  Resources:
+  This library uses the Arduino Wire.h to complete I2C transactions.
+
+  Development environment specifics:
+	IDE: Arduino 1.0.5
+	Hardware Platform: Arduino Pro 3.3V/8MHz
+	T5403 Breakout Version: 1.0
+
+  **Updated for Arduino 1.8.8 5/2019**
+
+  License: Please see LICENSE.md for more details.
+
+  Distributed as-is; no warranty is given.
+******************************************************************************/
+
 #include <Wire.h>
-// Place the MS5803_05 library folder in your Arduino 'libraries' directory
-#include <MS5803_05.h> 
+#include <SparkFun_MS5803_I2C.h> // Click here to get the library: http://librarymanager/All#SparkFun_MS5803-14BA
 
-// Declare 'sensor' as the object that will refer to your MS5803 in the sketch
-// Enter the oversampling value as an argument. Valid choices are
-// 256, 512, 1024, 2048, 4096. Library default = 512.
-MS_5803 sensor = MS_5803(512);
+// Begin class with selected address
+// available addresses (selected by jumper on board)
+// default is ADDRESS_HIGH
+
+//  ADDRESS_HIGH = 0x76
+//  ADDRESS_LOW  = 0x77
+MS5803 sensor(ADDRESS_HIGH); // Instantiate the sensor using ADDRESS_HIGH
+//MS5803 sensor; // Or, from v1.1.3, we can also do this. The address will default to ADDRESS_HIGH
+
+//Create variables to store results
+float temperature_c, temperature_f;
+double pressure_abs, pressure_relative, altitude_delta, pressure_baseline;
+
+// Create Variable to store altitude in (m) for calculations;
+double base_altitude = 1655.0; // Altitude of SparkFun's HQ in Boulder, CO. in (m)
+
+// Thanks to Mike Grusin for letting me borrow the functions below from
+// the BMP180 example code.
+
+double sealevel(double P, double A)
+// Given a pressure P (mbar) taken at a specific altitude (meters),
+// return the equivalent pressure (mbar) at sea level.
+// This produces pressure readings that can be used for weather measurements.
+{
+  return (P / pow(1 - (A / 44330.0), 5.255));
+}
+
+
+double altitude(double P, double P0)
+// Given a pressure measurement P (mbar) and the pressure at a baseline P0 (mbar),
+// return altitude (meters) above baseline.
+{
+  return (44330.0 * (1 - pow(P / P0, 1 / 5.255)));
+}
 
 void setup() {
-  // Start the serial ports.
-  Serial.begin(9600); // other values include 9600, 14400, 57600 etc.
-  delay(2000);
-  // Initialize the MS5803 sensor. This will report the
-  // conversion coefficients to the Serial terminal if present.
-  // If you don't want all the coefficients printed out, 
-  // set sensor.initializeMS_5803(false).
-  if (sensor.initializeMS_5803()) {
-    Serial.println( "MS5803 CRC check OK." );
-  } 
-  else {
-    Serial.println( "MS5803 CRC check FAILED!" );
-  }
-  delay(3000);
+
+  // Start your preferred I2C object
+  Wire.begin(21,22);
+
+  //Initialize Serial Monitor
+  Serial.begin(115200);
+
+  //Retrieve calibration constants for conversion math.
+  sensor.reset();
+
+  // Begin communication with the sensor
+  sensor.begin(); // Begin the sensor using Wire
+  //sensor.begin(Wire, 0x76); // Or, from v1.1.3, we can also do this
+
+  pressure_baseline = sensor.getPressure(ADC_4096);
+
 }
 
 void loop() {
-  // Use readSensor() function to get pressure and temperature reading. 
-  sensor.readSensor();
-   // Uncomment the print commands below to show the raw D1 and D2 values
-//  Serial.print("D1 = ");
-//  Serial.println(sensor.D1val());
-//  Serial.print("D2 = ");
-//  Serial.println(sensor.D2val());
 
-  // Show pressure
-  Serial.print("Pressure = ");
-  Serial.print(sensor.pressure());
-  Serial.println(" mbar");
-  
-  // Show temperature
-  Serial.print("Temperature = ");
-  Serial.print(sensor.temperature());
-  Serial.println("C");
+  // To measure to higher degrees of precision use the following sensor settings:
+  // ADC_256
+  // ADC_512
+  // ADC_1024
+  // ADC_2048
+  // ADC_4096
 
-  delay(1000); // For readability
+  // Read temperature from the sensor in deg C. This operation takes about
+  temperature_c = sensor.getTemperature(CELSIUS, ADC_512);
+
+  // Read temperature from the sensor in deg F. Converting
+  // to Fahrenheit is not internal to the sensor.
+  // Additional math is done to convert a Celsius reading.
+  temperature_f = sensor.getTemperature(FAHRENHEIT, ADC_512);
+
+  // Read pressure from the sensor in mbar.
+  pressure_abs = sensor.getPressure(ADC_4096);
+
+  // Let's do something interesting with our data.
+
+  // Convert abs pressure with the help of altitude into relative pressure
+  // This is used in Weather stations.
+  pressure_relative = sealevel(pressure_abs, base_altitude);
+
+  // Taking our baseline pressure at the beginning we can find an approximate
+  // change in altitude based on the differences in pressure.
+  altitude_delta = altitude(pressure_abs , pressure_baseline);
+
+  // Report values via UART
+  Serial.print("Temperature C = ");
+  Serial.println(temperature_c);
+
+  Serial.print("Temperature F = ");
+  Serial.println(temperature_f);
+
+  Serial.print("Pressure abs (mbar)= ");
+  Serial.println(pressure_abs);
+
+  Serial.print("Pressure relative (mbar)= ");
+  Serial.println(pressure_relative);
+
+  Serial.print("Altitude change (m) = ");
+  Serial.println(altitude_delta);
+
+  Serial.println(" ");//padding between outputs
+
+  delay(1000);
+
 }
+
+
