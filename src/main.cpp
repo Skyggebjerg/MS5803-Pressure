@@ -1,8 +1,16 @@
 #include <Arduino.h>
 #include <M5CoreInk.h>
 #include <M5GFX.h>
+#include "esp_adc_cal.h"
+
+#include <ArduinoJson.h> //https://github.com/bblanchon/ArduinoJson.git
+#include <NTPClient.h>   //https://github.com/taranais/NTPClient
 #include "Orbitron_Bold_70.h"
 #include "Orbitron_Medium_20.h"
+#include "Orbitron_Bold_32.h"
+#include <WiFi.h>
+#include <WiFiUdp.h>
+#include <HTTPClient.h>
 #include <Wire.h>
 #include <SparkFun_MS5803_I2C.h> // Click here to get the library: http://librarymanager/All#SparkFun_MS5803-14BA
 
@@ -13,9 +21,21 @@
 MS5803 sensor(ADDRESS_HIGH); // Instantiate the sensor using ADDRESS_HIGH
 M5GFX display;
 
+const char *ssid = "ShadowNets";        // EDIT
+const char *password = "Shadow666";        // EDIT
+
 float temperature_c;
 double pressure_abs;
 char text[64];
+
+// Define NTP Client to get time
+WiFiUDP ntpUDP;
+NTPClient timeClient(ntpUDP);
+
+// Variables to save date and time
+String formattedDate;
+String dayStamp;
+String timeStamp;
 
 void getData()
 {
@@ -29,13 +49,13 @@ void getData()
   //Serial.println(pressure_abs);
   display.setTextColor(TFT_BLACK);
   //display.setFont(&Orbitron_Medium_25);
-  display.setFont(&Orbitron_Bold_70);
+  display.setFont(&Orbitron_Bold_66);
   int32_t o;
    display.clear(TFT_WHITE);
-  o = display.textWidth(text);
+  //o = display.textWidth(text);
   //display.setCursor((display.width()/2 - o/2), 100);
-  display.setCursor(5,5);
-  display.print(floor(pressure_abs),0); //(floor(aFloat),0)
+  display.setCursor(4,50);
+  display.print(round(pressure_abs),0); //(floor(aFloat),0)
 
 }
 
@@ -52,18 +72,64 @@ void setup() {
   sensor.reset(); //Retrieve calibration constants for conversion math.
   sensor.begin(); // Begin the sensor using Wire
 
-  getData();
+  //getData();
 
   //Serial.println(" ");//padding between outputs
   //delay(5000);
   display.display();
   display.waitDisplay();
   display.wakeup();
-  delay(700);
-  M5.shutdown(300); // 600 seconds = 10 minutes
+  //delay(700);
+  //M5.shutdown(300); // 600 seconds = 10 minutes
+
+  WiFi.begin(ssid, password);
+  int nowifi = 0;
+  while (WiFi.status() != WL_CONNECTED)
+  {
+    delay(100);
+    ++nowifi;
+    if (nowifi > 200)
+    {
+      //drawBatteryStatus();
+      display.display();
+      display.waitDisplay();
+      display.wakeup();
+      M5.shutdown();
+    }
+  }
+  timeClient.begin();
+  timeClient.setTimeOffset(3600); /*EDDITTTTTTTTTTTTTTTTTTTTTTTT                      */
+  delay(100);
+
 }
 
+String curSeconds = "";
+
 void loop() {
+
+getData();
+
+  while (!timeClient.update())
+  {
+    timeClient.forceUpdate();
+  }
+  // The formattedDate comes with the following format:
+  // 2018-05-28T16:00:13Z
+  // We need to extract date and time
+  formattedDate = timeClient.getFormattedDate();
+
+  int splitT = formattedDate.indexOf("T");
+  dayStamp = formattedDate.substring(0, splitT);
+  timeStamp = formattedDate.substring(splitT + 1, formattedDate.length() - 1);
+  curSeconds = timeStamp.substring(6, 8);
+  String current = timeStamp.substring(0, 5);
+    display.setFont(&Orbitron_Bold_32);
+    display.setCursor(10, 10);
+  display.print(current); // print current time
+
+  delay(700);
+  M5.shutdown(3600); // 600 seconds = 10 minutes
+
   // To measure to higher degrees of precision use the following sensor settings:
   // ADC_256
   // ADC_512

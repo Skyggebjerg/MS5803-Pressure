@@ -10,6 +10,11 @@
             "includePath": [
                 "c:/Users/ole/OneDrive/Documents/PlatformIO/Projects/MS5803-Pressure/include",
                 "c:/Users/ole/OneDrive/Documents/PlatformIO/Projects/MS5803-Pressure/src",
+                "C:/Users/ole/.platformio/packages/framework-arduinoespressif32/libraries/HTTPClient/src",
+                "C:/Users/ole/.platformio/packages/framework-arduinoespressif32/libraries/WiFiClientSecure/src",
+                "C:/Users/ole/.platformio/packages/framework-arduinoespressif32/libraries/WiFi/src",
+                "c:/Users/ole/OneDrive/Documents/PlatformIO/Projects/MS5803-Pressure/.pio/libdeps/m5stack-coreink/ArduinoJson/src",
+                "c:/Users/ole/OneDrive/Documents/PlatformIO/Projects/MS5803-Pressure/.pio/libdeps/m5stack-coreink/NTPClient",
                 "c:/Users/ole/OneDrive/Documents/PlatformIO/Projects/MS5803-Pressure/.pio/libdeps/m5stack-coreink/M5GFX/src",
                 "c:/Users/ole/OneDrive/Documents/PlatformIO/Projects/MS5803-Pressure/.pio/libdeps/m5stack-coreink/SparkFun MS5803-14BA Pressure Sensor/src",
                 "c:/Users/ole/OneDrive/Documents/PlatformIO/Projects/MS5803-Pressure/.pio/libdeps/m5stack-coreink/M5Core-Ink/src",
@@ -217,7 +222,6 @@
                 "C:/Users/ole/.platformio/packages/framework-arduinoespressif32/libraries/Ethernet/src",
                 "C:/Users/ole/.platformio/packages/framework-arduinoespressif32/libraries/FFat/src",
                 "C:/Users/ole/.platformio/packages/framework-arduinoespressif32/libraries/FS/src",
-                "C:/Users/ole/.platformio/packages/framework-arduinoespressif32/libraries/HTTPClient/src",
                 "C:/Users/ole/.platformio/packages/framework-arduinoespressif32/libraries/HTTPUpdate/src",
                 "C:/Users/ole/.platformio/packages/framework-arduinoespressif32/libraries/HTTPUpdateServer/src",
                 "C:/Users/ole/.platformio/packages/framework-arduinoespressif32/libraries/I2S/src",
@@ -234,8 +238,6 @@
                 "C:/Users/ole/.platformio/packages/framework-arduinoespressif32/libraries/USB/src",
                 "C:/Users/ole/.platformio/packages/framework-arduinoespressif32/libraries/Update/src",
                 "C:/Users/ole/.platformio/packages/framework-arduinoespressif32/libraries/WebServer/src",
-                "C:/Users/ole/.platformio/packages/framework-arduinoespressif32/libraries/WiFi/src",
-                "C:/Users/ole/.platformio/packages/framework-arduinoespressif32/libraries/WiFiClientSecure/src",
                 "C:/Users/ole/.platformio/packages/framework-arduinoespressif32/libraries/WiFiProv/src",
                 ""
             ],
@@ -244,6 +246,11 @@
                 "path": [
                     "c:/Users/ole/OneDrive/Documents/PlatformIO/Projects/MS5803-Pressure/include",
                     "c:/Users/ole/OneDrive/Documents/PlatformIO/Projects/MS5803-Pressure/src",
+                    "C:/Users/ole/.platformio/packages/framework-arduinoespressif32/libraries/HTTPClient/src",
+                    "C:/Users/ole/.platformio/packages/framework-arduinoespressif32/libraries/WiFiClientSecure/src",
+                    "C:/Users/ole/.platformio/packages/framework-arduinoespressif32/libraries/WiFi/src",
+                    "c:/Users/ole/OneDrive/Documents/PlatformIO/Projects/MS5803-Pressure/.pio/libdeps/m5stack-coreink/ArduinoJson/src",
+                    "c:/Users/ole/OneDrive/Documents/PlatformIO/Projects/MS5803-Pressure/.pio/libdeps/m5stack-coreink/NTPClient",
                     "c:/Users/ole/OneDrive/Documents/PlatformIO/Projects/MS5803-Pressure/.pio/libdeps/m5stack-coreink/M5GFX/src",
                     "c:/Users/ole/OneDrive/Documents/PlatformIO/Projects/MS5803-Pressure/.pio/libdeps/m5stack-coreink/SparkFun MS5803-14BA Pressure Sensor/src",
                     "c:/Users/ole/OneDrive/Documents/PlatformIO/Projects/MS5803-Pressure/.pio/libdeps/m5stack-coreink/M5Core-Ink/src",
@@ -451,7 +458,6 @@
                     "C:/Users/ole/.platformio/packages/framework-arduinoespressif32/libraries/Ethernet/src",
                     "C:/Users/ole/.platformio/packages/framework-arduinoespressif32/libraries/FFat/src",
                     "C:/Users/ole/.platformio/packages/framework-arduinoespressif32/libraries/FS/src",
-                    "C:/Users/ole/.platformio/packages/framework-arduinoespressif32/libraries/HTTPClient/src",
                     "C:/Users/ole/.platformio/packages/framework-arduinoespressif32/libraries/HTTPUpdate/src",
                     "C:/Users/ole/.platformio/packages/framework-arduinoespressif32/libraries/HTTPUpdateServer/src",
                     "C:/Users/ole/.platformio/packages/framework-arduinoespressif32/libraries/I2S/src",
@@ -468,8 +474,6 @@
                     "C:/Users/ole/.platformio/packages/framework-arduinoespressif32/libraries/USB/src",
                     "C:/Users/ole/.platformio/packages/framework-arduinoespressif32/libraries/Update/src",
                     "C:/Users/ole/.platformio/packages/framework-arduinoespressif32/libraries/WebServer/src",
-                    "C:/Users/ole/.platformio/packages/framework-arduinoespressif32/libraries/WiFi/src",
-                    "C:/Users/ole/.platformio/packages/framework-arduinoespressif32/libraries/WiFiClientSecure/src",
                     "C:/Users/ole/.platformio/packages/framework-arduinoespressif32/libraries/WiFiProv/src",
                     ""
                 ]
