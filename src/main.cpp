@@ -51,6 +51,16 @@ void setup() {
   display.clear(TFT_WHITE);
   sensor.reset(); //Retrieve calibration constants for conversion math.
   sensor.begin(); // Begin the sensor using Wire
+
+  getData();
+
+  //Serial.println(" ");//padding between outputs
+  //delay(5000);
+  display.display();
+  display.waitDisplay();
+  display.wakeup();
+  delay(700);
+  M5.shutdown(300); // 600 seconds = 10 minutes
 }
 
 void loop() {
@@ -61,15 +71,7 @@ void loop() {
   // ADC_2048
   // ADC_4096
 
-getData();
 
-  //Serial.println(" ");//padding between outputs
-  //delay(5000);
-  display.display();
-  display.waitDisplay();
-  display.wakeup();
-  delay(700);
-  M5.shutdown(300); // 600 seconds = 10 minutes
 }
 
 
