@@ -10,6 +10,7 @@
             "includePath": [
                 "c:/Users/ole/OneDrive/Documents/PlatformIO/Projects/MS5803-Pressure/include",
                 "c:/Users/ole/OneDrive/Documents/PlatformIO/Projects/MS5803-Pressure/src",
+                "c:/Users/ole/OneDrive/Documents/PlatformIO/Projects/MS5803-Pressure/.pio/libdeps/m5stack-coreink/M5GFX/src",
                 "c:/Users/ole/OneDrive/Documents/PlatformIO/Projects/MS5803-Pressure/.pio/libdeps/m5stack-coreink/SparkFun MS5803-14BA Pressure Sensor/src",
                 "c:/Users/ole/OneDrive/Documents/PlatformIO/Projects/MS5803-Pressure/.pio/libdeps/m5stack-coreink/M5Core-Ink/src",
                 "C:/Users/ole/.platformio/packages/framework-arduinoespressif32/libraries/SPI/src",
@@ -243,6 +244,7 @@
                 "path": [
                     "c:/Users/ole/OneDrive/Documents/PlatformIO/Projects/MS5803-Pressure/include",
                     "c:/Users/ole/OneDrive/Documents/PlatformIO/Projects/MS5803-Pressure/src",
+                    "c:/Users/ole/OneDrive/Documents/PlatformIO/Projects/MS5803-Pressure/.pio/libdeps/m5stack-coreink/M5GFX/src",
                     "c:/Users/ole/OneDrive/Documents/PlatformIO/Projects/MS5803-Pressure/.pio/libdeps/m5stack-coreink/SparkFun MS5803-14BA Pressure Sensor/src",
                     "c:/Users/ole/OneDrive/Documents/PlatformIO/Projects/MS5803-Pressure/.pio/libdeps/m5stack-coreink/M5Core-Ink/src",
                     "C:/Users/ole/.platformio/packages/framework-arduinoespressif32/libraries/SPI/src",
